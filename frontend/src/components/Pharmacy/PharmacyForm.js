@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPharmacy, updatePharmacy } from '../../services/api';
 import '../../styles/styles.css';
 
-const PharmacyForm = ({ refreshPharmacies }) => {
+const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
   const [form, setForm] = useState({
     id: null,
     name: '',
     address: ''
   });
+
+  useEffect(() => {
+    if (pharmacy) {
+      setForm(pharmacy);
+    }
+  }, [pharmacy]);
 
   const handleChange = (e) => {
     setForm({
@@ -31,23 +37,21 @@ const PharmacyForm = ({ refreshPharmacies }) => {
     refreshPharmacies();
   };
 
-  const handleEdit = (pharmacy) => {
-    setForm(pharmacy);
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-container">
       <input
         name="name"
         value={form.name}
         onChange={handleChange}
         placeholder="Name"
+        required
       />
       <input
         name="address"
         value={form.address}
         onChange={handleChange}
         placeholder="Address"
+        required
       />
       <button type="submit">Save</button>
     </form>

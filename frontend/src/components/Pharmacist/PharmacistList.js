@@ -5,6 +5,7 @@ import '../../styles/styles.css';
 
 const PharmacistList = () => {
   const [pharmacists, setPharmacists] = useState([]);
+  const [selectedPharmacist, setSelectedPharmacist] = useState(null);
 
   useEffect(() => {
     loadPharmacists();
@@ -23,12 +24,14 @@ const PharmacistList = () => {
   return (
     <div className="container">
       <h2>Pharmacists</h2>
-      <PharmacistForm refreshPharmacists={loadPharmacists} />
+      <PharmacistForm refreshPharmacists={loadPharmacists} pharmacist={selectedPharmacist} />
       <ul>
         {pharmacists.map(pharmacist => (
           <li key={pharmacist.id} className="list-item">
             {pharmacist.FirstName} {pharmacist.LastName}
-            <button onClick={() => handleDelete(pharmacist.id)}>Delete</button>
+            <div>
+              <button onClick={() => handleDelete(pharmacist.id)}>Delete</button>
+            </div>
           </li>
         ))}
       </ul>

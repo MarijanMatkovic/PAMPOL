@@ -1,39 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { getPharmacists, deletePharmacist } from '../../services/api';
-import PharmacistForm from './PharmacistForm';
+import { createPharmacist, updatePharmacist } from '../../services/api';
 import '../../styles/styles.css';
 
-const PharmacistList = () => {
-  const [pharmacists, setPharmacists] = useState([]);
+const PharmacistForm = ({ refreshPharmacists, pharmacist }) => {
+  const [form, setForm] = useState({
+    id: null,
+    FirstName: '',
+    LastName: ''
+  });
 
   useEffect(() => {
-    loadPharmacists();
-  }, []);
+    if (pharmacist) {
+      setForm(pharmacist);
+    }
+  }, [pharmacist]);
 
-  const loadPharmacists = async () => {
-    const result = await getPharmacists();
-    setPharmacists(result.data);
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const handleDelete = async (id) => {
-    await deletePharmacist(id);
-    loadPharmacists();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (form.id) {
+      await updatePharmacist(form.id, form);
+    } else {
+      await createPharmacist(form);
+    }
+    setForm({
+      id: null,
+      FirstName: '',
+      LastName: ''
+    });
+    refreshPharmacists();
   };
 
   return (
-    <div className="container">
-      <h2>Pharmacists</h2>
-      <PharmacistForm refreshPharmacists={loadPharmacists} />
-      <ul>
-        {pharmacists.map(pharmacist => (
-          <li key={pharmacist.id} className="list-item">
-            {pharmacist.FirstName} {pharmacist.LastName}
-            <button onClick={() => handleDelete(pharmacist.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <form onSubmit={handleSubmit} className="form-container">
+      <input
+        name="FirstName"
+        value={form.FirstName}
+        onChange={handleChange}
+        placeholder="First Name"
+        required
+      />
+      <input
+        name="LastName"
+        value={form.LastName}
+        onChange={handleChange}
+        placeholder="Last Name"
+        required
+      />
+      <button type="submit">Save</button>
+    </form>
   );
 };
 
-export default PharmacistList;
+export default PharmacistForm;

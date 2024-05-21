@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { createMedication, updateMedication } from '../../services/api';
 import '../../styles/styles.css';
 
-const MedicationForm = ({ refreshMedications }) => {
-  const [form, setForm] = useState({
+const MedicationForm = ({ refreshMedications, medication }) => {
+  const [form, setForm] = useState(medication || {
     id: null,
     name: '',
     manufacturer: '',
@@ -34,18 +34,20 @@ const MedicationForm = ({ refreshMedications }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-container">
       <input
         name="name"
         value={form.name}
         onChange={handleChange}
         placeholder="Name"
+        required
       />
       <input
         name="manufacturer"
         value={form.manufacturer}
         onChange={handleChange}
         placeholder="Manufacturer"
+        required
       />
       <input
         name="price"
@@ -54,6 +56,7 @@ const MedicationForm = ({ refreshMedications }) => {
         placeholder="Price"
         type="number"
         step="0.01"
+        required
       />
       <button type="submit">Save</button>
     </form>

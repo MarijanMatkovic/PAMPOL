@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { createDoctor, updateDoctor } from '../../services/api';
+import '../../styles/styles.css';
 
 const DoctorForm = ({ refreshDoctors }) => {
   const [form, setForm] = useState({
+    id: null,
     FirstName: '',
     LastName: '',
     specialty: ''
@@ -23,6 +25,7 @@ const DoctorForm = ({ refreshDoctors }) => {
       await createDoctor(form);
     }
     setForm({
+      id: null,
       FirstName: '',
       LastName: '',
       specialty: ''
@@ -31,24 +34,30 @@ const DoctorForm = ({ refreshDoctors }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-container">
       <input
+        type="text"
         name="FirstName"
         value={form.FirstName}
         onChange={handleChange}
         placeholder="First Name"
+        required
       />
       <input
+        type="text"
         name="LastName"
         value={form.LastName}
         onChange={handleChange}
         placeholder="Last Name"
+        required
       />
       <input
+        type="text"
         name="specialty"
         value={form.specialty}
         onChange={handleChange}
         placeholder="Specialty"
+        required
       />
       <button type="submit">Save</button>
     </form>
