@@ -55,3 +55,4 @@ coverage/
 ._*
 *.swo
 *.swn
+node_modules

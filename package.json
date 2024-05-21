@@ -2,12 +2,11 @@
     "name": "pam-pol",
     "version": "1.0.0",
     "scripts": {
-      "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
-      "start:backend": "cd backend && mvn spring-boot:run",
-      "start:frontend": "cd frontend && npm start"
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd backend && mvn spring-boot:run",
+        "start:frontend": "cd frontend && npm start"
     },
     "devDependencies": {
-      "concurrently": "^6.0.0"
+        "concurrently": "^6.0.0"
     }
-  }
-  
+}
