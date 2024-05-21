@@ -1,27 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createDoctor, updateDoctor, getPharmacies } from '../../services/api';
+import { createDoctor } from '../../services/api';
 import '../../styles/styles.css';
 
 const DoctorForm = ({ refreshDoctors, doctor }) => {
-  const [pharmacies, setPharmacies] = useState([]);
-
-  useEffect(() => {
-    const fetchPharmacies = async () => {
-      const result = await getPharmacies();
-      setPharmacies(result.data);
-    };
-    fetchPharmacies();
-  }, []);
-
   const formik = useFormik({
     initialValues: {
       id: doctor ? doctor.id : null,
       FirstName: doctor ? doctor.FirstName : '',
       LastName: doctor ? doctor.LastName : '',
       specialty: doctor ? doctor.specialty : '',
-      pharmacyIds: doctor ? doctor.pharmacyIds : [],
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -34,14 +23,9 @@ const DoctorForm = ({ refreshDoctors, doctor }) => {
       specialty: Yup.string()
         .max(255, 'Specialty must be 255 characters or less')
         .required('Specialty is required'),
-      pharmacyIds: Yup.array().min(1, 'At least one pharmacy must be selected'),
     }),
     onSubmit: async (values, { resetForm }) => {
-      if (values.id) {
-        await updateDoctor(values.id, values);
-      } else {
-        await createDoctor(values);
-      }
+      await createDoctor(values);
       resetForm();
       refreshDoctors();
     },
@@ -51,7 +35,7 @@ const DoctorForm = ({ refreshDoctors, doctor }) => {
     if (doctor) {
       formik.setValues(doctor);
     }
-  }, [doctor]);
+  }, [doctor, formik]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="form-container">
@@ -92,24 +76,6 @@ const DoctorForm = ({ refreshDoctors, doctor }) => {
       />
       {formik.touched.specialty && formik.errors.specialty ? (
         <div className="error">{formik.errors.specialty}</div>
-      ) : null}
-
-      <select
-        name="pharmacyIds"
-        value={formik.values.pharmacyIds}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        multiple
-        required
-      >
-        {pharmacies.map((pharmacy) => (
-          <option key={pharmacy.id} value={pharmacy.id}>
-            {pharmacy.name}
-          </option>
-        ))}
-      </select>
-      {formik.touched.pharmacyIds && formik.errors.pharmacyIds ? (
-        <div className="error">{formik.errors.pharmacyIds}</div>
       ) : null}
 
       <button type="submit">Save</button>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createMedication, updateMedication, getPharmacies } from '../../services/api';
+import { createMedication, getPharmacies } from '../../services/api';
 import '../../styles/styles.css';
 
 const MedicationForm = ({ refreshMedications, medication }) => {
@@ -21,7 +21,7 @@ const MedicationForm = ({ refreshMedications, medication }) => {
       name: medication ? medication.name : '',
       manufacturer: medication ? medication.manufacturer : '',
       price: medication ? medication.price : '',
-      pharmacyIds: medication ? medication.pharmacyIds : [],  // assuming medication object has pharmacyIds array
+      pharmacyIds: medication ? medication.pharmacyIds : []
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -37,11 +37,7 @@ const MedicationForm = ({ refreshMedications, medication }) => {
       pharmacyIds: Yup.array().min(1, 'At least one pharmacy must be selected'),
     }),
     onSubmit: async (values, { resetForm }) => {
-      if (values.id) {
-        await updateMedication(values.id, values);
-      } else {
-        await createMedication(values);
-      }
+      await createMedication(values);
       resetForm();
       refreshMedications();
     },
@@ -51,7 +47,7 @@ const MedicationForm = ({ refreshMedications, medication }) => {
     if (medication) {
       formik.setValues(medication);
     }
-  }, [medication]);
+  }, [medication, formik]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="form-container">

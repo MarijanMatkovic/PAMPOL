@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createPharmacist, updatePharmacist, getPharmacies } from '../../services/api';
+import { createPharmacist, getPharmacies } from '../../services/api';
 import '../../styles/styles.css';
 
 const PharmacistForm = ({ refreshPharmacists, pharmacist }) => {
@@ -33,11 +33,7 @@ const PharmacistForm = ({ refreshPharmacists, pharmacist }) => {
       pharmacyId: Yup.string().required('Pharmacy is required'),
     }),
     onSubmit: async (values, { resetForm }) => {
-      if (values.id) {
-        await updatePharmacist(values.id, values);
-      } else {
-        await createPharmacist(values);
-      }
+      await createPharmacist(values);
       resetForm();
       refreshPharmacists();
     },
@@ -47,7 +43,7 @@ const PharmacistForm = ({ refreshPharmacists, pharmacist }) => {
     if (pharmacist) {
       formik.setValues(pharmacist);
     }
-  }, [pharmacist]);
+  }, [pharmacist, formik]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="form-container">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { createPharmacy, updatePharmacy } from '../../services/api';
@@ -34,7 +34,7 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
     if (pharmacy) {
       formik.setValues(pharmacy);
     }
-  }, [pharmacy]);
+  }, [pharmacy, formik]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="form-container">
@@ -45,6 +45,7 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         placeholder="Name"
+        required
       />
       {formik.touched.name && formik.errors.name ? (
         <div className="error">{formik.errors.name}</div>
@@ -57,6 +58,7 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         placeholder="Address"
+        required
       />
       {formik.touched.address && formik.errors.address ? (
         <div className="error">{formik.errors.address}</div>
