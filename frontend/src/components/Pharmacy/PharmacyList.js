@@ -28,10 +28,10 @@ const PharmacyList = () => {
 
   const handleEdit = (pharmacy) => {
     setSelectedPharmacy(pharmacy);
-    loadRelatedData(pharmacy.id);
+    loadRelatedData(pharmacy);
   };
 
-  const loadRelatedData = async (pharmacyId) => {
+  const loadRelatedData = async (pharmacy) => {
     const [doctors, pharmacists, medications] = await Promise.all([
       getDoctors(),
       getPharmacists(),
@@ -39,9 +39,9 @@ const PharmacyList = () => {
     ]);
 
     setRelatedData({
-      doctors: doctors.data.filter(doctor => doctor.pharmacyIds.includes(pharmacyId)),
-      pharmacists: pharmacists.data.filter(pharmacist => pharmacist.pharmacyId === pharmacyId),
-      medications: medications.data.filter(medication => medication.pharmacyIds.includes(pharmacyId))
+      doctors: doctors.data.filter(doctor => pharmacy.doctorIds.includes(doctor.id)),
+      pharmacists: pharmacists.data.filter(pharmacist => pharmacy.pharmacistIds.includes(pharmacist.id)),
+      medications: pharmacy.medications // Directly use medications from the pharmacy object
     });
   };
 
@@ -79,8 +79,8 @@ const PharmacyList = () => {
                 </ul>
                 <h4>Medications</h4>
                 <ul>
-                  {relatedData.medications.map(medication => (
-                    <li key={medication.id}>
+                  {relatedData.medications.map((medication, index) => (
+                    <li key={index}>
                       {medication.name} - {medication.manufacturer} - ${medication.price.toFixed(2)}
                     </li>
                   ))}
