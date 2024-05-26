@@ -28,6 +28,7 @@ const PharmacyList = () => {
 
   const handleEdit = async (pharmacy) => {
     setSelectedPharmacy(pharmacy);
+    console.log('Selected Pharmacy:', pharmacy); 
     await loadRelatedData(pharmacy);
   };
 
@@ -39,11 +40,18 @@ const PharmacyList = () => {
       getMedications()
     ]);
 
+    console.log('Doctors:', doctors.data);
+    console.log('Pharmacists:', pharmacists.data);
+    console.log('Medications:', medications.data);
+
     setRelatedData({
       doctors: doctors.data.filter(doctor => pharmacy.doctorIds && pharmacy.doctorIds.includes(doctor.id)),
       pharmacists: pharmacists.data.filter(pharmacist => pharmacy.pharmacistIds && pharmacy.pharmacistIds.includes(pharmacist.id)),
       medications: pharmacy.medications || []
     });
+
+    console.log('Filtered Doctors:', doctors.data.filter(doctor => pharmacy.doctorIds && pharmacy.doctorIds.includes(doctor.id)));
+    console.log('Filtered Pharmacists:', pharmacists.data.filter(pharmacist => pharmacy.pharmacistIds && pharmacy.pharmacistIds.includes(pharmacist.id)));
   };
 
   return (
