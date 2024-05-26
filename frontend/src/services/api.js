@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api'; // mozda ce tribat minjat
+const API_URL = 'http://localhost:8080/api';
 
 // Doctor API
 export const getDoctors = () => axios.get(`${API_URL}/doctors`);

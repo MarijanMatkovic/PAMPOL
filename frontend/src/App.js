@@ -4,6 +4,7 @@ import DoctorList from './components/Doctor/DoctorList';
 import PharmacistList from './components/Pharmacist/PharmacistList';
 import PharmacyList from './components/Pharmacy/PharmacyList';
 import MedicationList from './components/Medication/MedicationList';
+import HomePage from './components/Home';
 import './styles/styles.css';
 
 const App = () => {
@@ -19,12 +20,5 @@ const App = () => {
     </div>
   );
 };
-
-const HomePage = () => (
-  <div>
-    <h1>Welcome to the Medical Management System</h1>
-    <p>Please select a section to manage.</p>
-  </div>
-);
 
 export default App;

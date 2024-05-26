@@ -29,7 +29,7 @@ const DoctorList = () => {
       <ul>
         {doctors.map(doctor => (
           <li key={doctor.id} className="list-item">
-            {doctor.FirstName} {doctor.LastName} - {doctor.specialty}
+            {doctor.firstName} {doctor.lastName} - {doctor.specialty}
             <div>
               <button onClick={() => handleDelete(doctor.id)}>Delete</button>
             </div>

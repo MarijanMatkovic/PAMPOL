@@ -18,16 +18,16 @@ const PharmacistForm = ({ refreshPharmacists, pharmacist }) => {
   const formik = useFormik({
     initialValues: {
       id: pharmacist ? pharmacist.id : null,
-      FirstName: pharmacist ? pharmacist.FirstName : '',
-      LastName: pharmacist ? pharmacist.LastName : '',
+      firstName: pharmacist ? pharmacist.firstName : '',
+      lastName: pharmacist ? pharmacist.lastName : '',
       pharmacyId: pharmacist ? pharmacist.pharmacyId : '',
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
-      FirstName: Yup.string()
+      firstName: Yup.string()
         .max(50, 'First Name must be 50 characters or less')
         .required('First Name is required'),
-      LastName: Yup.string()
+      lastName: Yup.string()
         .max(50, 'Last Name must be 50 characters or less')
         .required('Last Name is required'),
       pharmacyId: Yup.string().required('Pharmacy is required'),
@@ -48,29 +48,29 @@ const PharmacistForm = ({ refreshPharmacists, pharmacist }) => {
   return (
     <form onSubmit={formik.handleSubmit} className="form-container">
       <input
-        name="FirstName"
+        name="firstName"
         type="text"
-        value={formik.values.FirstName}
+        value={formik.values.firstName}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         placeholder="First Name"
         required
       />
-      {formik.touched.FirstName && formik.errors.FirstName ? (
-        <div className="error">{formik.errors.FirstName}</div>
+      {formik.touched.firstName && formik.errors.firstName ? (
+        <div className="error">{formik.errors.firstName}</div>
       ) : null}
 
       <input
-        name="LastName"
+        name="lastName"
         type="text"
-        value={formik.values.LastName}
+        value={formik.values.lastName}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         placeholder="Last Name"
         required
       />
-      {formik.touched.LastName && formik.errors.LastName ? (
-        <div className="error">{formik.errors.LastName}</div>
+      {formik.touched.lastName && formik.errors.lastName ? (
+        <div className="error">{formik.errors.lastName}</div>
       ) : null}
 
       <select

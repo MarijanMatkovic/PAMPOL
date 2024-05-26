@@ -17,7 +17,7 @@ const PharmacistList = () => {
     if (filter) {
       setFilteredPharmacists(
         pharmacists.filter(pharmacist =>
-          `${pharmacist.FirstName} ${pharmacist.LastName}`.toLowerCase().includes(filter.toLowerCase())
+          `${pharmacist.firstName} ${pharmacist.lastName}`.toLowerCase().includes(filter.toLowerCase())
         )
       );
     } else {
@@ -49,7 +49,7 @@ const PharmacistList = () => {
       <ul>
         {filteredPharmacists.map(pharmacist => (
           <li key={pharmacist.id} className="list-item">
-            {pharmacist.FirstName} {pharmacist.LastName}
+            {pharmacist.firstName} {pharmacist.lastName}
             <div>
               <button onClick={() => handleDelete(pharmacist.id)}>Delete</button>
             </div>
