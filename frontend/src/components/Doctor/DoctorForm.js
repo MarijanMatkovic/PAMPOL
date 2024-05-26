@@ -61,7 +61,7 @@ const DoctorForm = ({ refreshDoctors, doctor }) => {
         placeholder="Last Name"
         required
       />
-      {formik.touched.LastName && formik.errors.lastName ? (
+      {formik.touched.lastName && formik.errors.lastName ? (
         <div className="error">{formik.errors.lastName}</div>
       ) : null}
 
