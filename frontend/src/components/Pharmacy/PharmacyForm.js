@@ -29,9 +29,9 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
       id: pharmacy ? pharmacy.id : null,
       name: pharmacy ? pharmacy.name : '',
       address: pharmacy ? pharmacy.address : '',
-      doctorIds: pharmacy ? pharmacy.doctorIds : [],
-      pharmacistIds: pharmacy ? pharmacy.pharmacistIds : [],
-      medications: pharmacy ? pharmacy.medications : [],
+      doctorIds: pharmacy ? pharmacy.doctorIds || [] : [],
+      pharmacistIds: pharmacy ? pharmacy.pharmacistIds || [] : [],
+      medications: pharmacy ? pharmacy.medications || [] : [],
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -55,14 +55,18 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
     },
   });
 
-  const handleDoctorChange = (e) => {
-    const value = Array.from(e.target.selectedOptions, option => option.value);
-    formik.setFieldValue('doctorIds', value);
+  const handleDoctorChange = (e, index) => {
+    const value = e.target.value;
+    const updatedDoctorIds = [...formik.values.doctorIds];
+    updatedDoctorIds[index] = value;
+    formik.setFieldValue('doctorIds', updatedDoctorIds);
   };
 
-  const handlePharmacistChange = (e) => {
-    const value = Array.from(e.target.selectedOptions, option => option.value);
-    formik.setFieldValue('pharmacistIds', value);
+  const handlePharmacistChange = (e, index) => {
+    const value = e.target.value;
+    const updatedPharmacistIds = [...formik.values.pharmacistIds];
+    updatedPharmacistIds[index] = value;
+    formik.setFieldValue('pharmacistIds', updatedPharmacistIds);
   };
 
   const handleMedicationChange = (e, index, field) => {
@@ -72,8 +76,26 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
     formik.setFieldValue('medications', updatedMedications);
   };
 
+  const addDoctor = () => {
+    formik.setFieldValue('doctorIds', [...formik.values.doctorIds, '']);
+  };
+
+  const addPharmacist = () => {
+    formik.setFieldValue('pharmacistIds', [...formik.values.pharmacistIds, '']);
+  };
+
   const addMedication = () => {
     formik.setFieldValue('medications', [...formik.values.medications, { name: '', manufacturer: '', price: 0 }]);
+  };
+
+  const removeDoctor = (index) => {
+    const updatedDoctorIds = formik.values.doctorIds.filter((_, i) => i !== index);
+    formik.setFieldValue('doctorIds', updatedDoctorIds);
+  };
+
+  const removePharmacist = (index) => {
+    const updatedPharmacistIds = formik.values.pharmacistIds.filter((_, i) => i !== index);
+    formik.setFieldValue('pharmacistIds', updatedPharmacistIds);
   };
 
   const removeMedication = (index) => {
@@ -109,41 +131,51 @@ const PharmacyForm = ({ refreshPharmacies, pharmacy }) => {
         <div className="error">{formik.errors.address}</div>
       ) : null}
 
-      <select
-        name="doctorIds"
-        multiple
-        value={formik.values.doctorIds}
-        onChange={handleDoctorChange}
-        onBlur={formik.handleBlur}
-        required
-      >
-        {doctors.map(doctor => (
-          <option key={doctor.id} value={doctor.id}>
-            {doctor.firstName} {doctor.lastName}
-          </option>
+      <div>
+        <h4>Doctors</h4>
+        {formik.values.doctorIds.map((doctorId, index) => (
+          <div key={index}>
+            <select
+              name={`doctorIds[${index}]`}
+              value={doctorId}
+              onChange={(e) => handleDoctorChange(e, index)}
+              required
+            >
+              <option value="" label="Select doctor" />
+              {doctors.map(doctor => (
+                <option key={doctor.id} value={doctor.id}>
+                  {doctor.firstName} {doctor.lastName}
+                </option>
+              ))}
+            </select>
+            <button type="button" onClick={() => removeDoctor(index)}>Remove</button>
+          </div>
         ))}
-      </select>
-      {formik.touched.doctorIds && formik.errors.doctorIds ? (
-        <div className="error">{formik.errors.doctorIds}</div>
-      ) : null}
+        <button type="button" onClick={addDoctor}>Add Doctor</button>
+      </div>
 
-      <select
-        name="pharmacistIds"
-        multiple
-        value={formik.values.pharmacistIds}
-        onChange={handlePharmacistChange}
-        onBlur={formik.handleBlur}
-        required
-      >
-        {pharmacists.map(pharmacist => (
-          <option key={pharmacist.id} value={pharmacist.id}>
-            {pharmacist.firstName} {pharmacist.lastName}
-          </option>
+      <div>
+        <h4>Pharmacists</h4>
+        {formik.values.pharmacistIds.map((pharmacistId, index) => (
+          <div key={index}>
+            <select
+              name={`pharmacistIds[${index}]`}
+              value={pharmacistId}
+              onChange={(e) => handlePharmacistChange(e, index)}
+              required
+            >
+              <option value="" label="Select pharmacist" />
+              {pharmacists.map(pharmacist => (
+                <option key={pharmacist.id} value={pharmacist.id}>
+                  {pharmacist.firstName} {pharmacist.lastName}
+                </option>
+              ))}
+            </select>
+            <button type="button" onClick={() => removePharmacist(index)}>Remove</button>
+          </div>
         ))}
-      </select>
-      {formik.touched.pharmacistIds && formik.errors.pharmacistIds ? (
-        <div className="error">{formik.errors.pharmacistIds}</div>
-      ) : null}
+        <button type="button" onClick={addPharmacist}>Add Pharmacist</button>
+      </div>
 
       <div>
         <h4>Medications</h4>

@@ -26,12 +26,13 @@ const PharmacyList = () => {
     loadPharmacies();
   };
 
-  const handleEdit = (pharmacy) => {
+  const handleEdit = async (pharmacy) => {
     setSelectedPharmacy(pharmacy);
-    loadRelatedData(pharmacy);
+    await loadRelatedData(pharmacy);
   };
 
   const loadRelatedData = async (pharmacy) => {
+    if (!pharmacy) return;
     const [doctors, pharmacists, medications] = await Promise.all([
       getDoctors(),
       getPharmacists(),
@@ -39,9 +40,9 @@ const PharmacyList = () => {
     ]);
 
     setRelatedData({
-      doctors: doctors.data.filter(doctor => pharmacy.doctorIds.includes(doctor.id)),
-      pharmacists: pharmacists.data.filter(pharmacist => pharmacy.pharmacistIds.includes(pharmacist.id)),
-      medications: pharmacy.medications // Directly use medications from the pharmacy object
+      doctors: doctors.data.filter(doctor => pharmacy.doctorIds && pharmacy.doctorIds.includes(doctor.id)),
+      pharmacists: pharmacists.data.filter(pharmacist => pharmacy.pharmacistIds && pharmacy.pharmacistIds.includes(pharmacist.id)),
+      medications: pharmacy.medications || []
     });
   };
 
