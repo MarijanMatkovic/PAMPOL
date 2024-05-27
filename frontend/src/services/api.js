@@ -19,6 +19,7 @@ export const deletePharmacy = (id) => axios.delete(`${API_URL}/pharmacies/${id}`
 export const getMedications = () => axios.get(`${API_URL}/medications`);
 export const getMedication = (id) => axios.get(`${API_URL}/medications/${id}`);
 export const createMedication = (medication) => axios.post(`${API_URL}/medications`, medication);
+export const updateMedication = (id, medication) => axios.put(`${API_URL}/medications/${id}`, medication);
 export const deleteMedication = (id) => axios.delete(`${API_URL}/medications/${id}`);
 
 // Pharmacist API

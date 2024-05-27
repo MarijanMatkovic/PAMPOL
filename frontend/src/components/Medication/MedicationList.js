@@ -21,6 +21,10 @@ const MedicationList = () => {
     loadMedications();
   };
 
+  const handleEdit = (medication) => {
+    setSelectedMedication(medication);
+  };
+
   return (
     <div className="container">
       <h2>Medications</h2>
@@ -30,6 +34,7 @@ const MedicationList = () => {
           <li key={medication.id} className="list-item">
             {medication.name} - {medication.manufacturer} - ${medication.price.toFixed(2)}
             <div>
+              <button onClick={() => handleEdit(medication)}>Edit</button>
               <button onClick={() => handleDelete(medication.id)}>Delete</button>
             </div>
           </li>
